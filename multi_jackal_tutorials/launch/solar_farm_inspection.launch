@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<!-- A bit misleading, all the jackal sims have GPS, but this one uses it to
+     create the map->odom transformation, rather than using a static TF. -->
+
+<launch>
+
+  <arg name="ns0"         default="jackal0"/>
+  <arg name="ns1"         default="jackal1"/>
+  <arg name="ns2"         default="jackal2"/>
+  <arg name="warthog_ns"  default="warthog"/>
+
+  <arg name="rviz"       default="true"/>
+  <!-- <arg name="config"     default="base"/> -->
+  <arg name="config"     default="front_laser"/>
+  <arg name="config_id"  default="0"/>
+  <arg name="use_battery"          value="true" />
+
+  <param name="agriculture_geom" command="$(find xacro)/xacro --inorder '$(find cpr_agriculture_gazebo)/urdf/agriculture_geometry.urdf.xacro'" />
+
+  <!-- <arg name="world_name" default="$(find cpr_inspection_gazebo)/worlds/inspection_world.world"/> -->
+  <arg name="world_name" default="$(find cpr_agriculture_gazebo)/worlds/actually_empty_world.world" />
+  <arg name="gui"        default="false"/>
+  <arg name="use_sim_time" default="true" />
+  <arg name="headless" default="true" />
+
+  <!--Load navigation and inspection waypoints into parameter server -->
+  <rosparam command="load" file="$(find multi_jackal_tutorials)/config/navigation_waypoints.yaml" />
+  <rosparam command="load" file="$(find multi_jackal_tutorials)/config/inspection_waypoints.yaml" />
+  <rosparam command="load" file="$(find multi_jackal_tutorials)/config/config_battery_mockup.yaml" />
+
+  <!-- Start Gazebo with an empty world. -->
+<!--   <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="0" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="headless" value="$(arg headless)" />
+    <arg name="world_name" value="$(arg world_name)" />
+  </include> -->
+  <!-- Spawn objects in gazebo world-->
+<!--   <node name="agriculture_world_spawner" pkg="gazebo_ros" type="spawn_model" args="-urdf -model agriculture_geom -param agriculture_geom -x 0 -y 0 -z 0 -Y 0" />
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="world_to_map" args="0.0 0.0 0. 0. 0. 0. 1. /map /agriculture_world_link" />
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="dummy_localization" args="0.0 0.0 0. 0. 0. 0. 1. /world /map" /> -->
+
+  <!-- Spawn Jackal 0 -->
+<!--   <include file="$(find multi_jackal_base)/launch/jackal_base.launch">
+    <arg name="ns"             value="$(arg ns0)"/>
+    <arg name="config"         value="$(arg config)"/>
+    <arg name="config_id"      value="$(arg config_id)"/>
+    <arg name="x"              value="0"/>
+    <arg name="y"              value="0"/>
+    <arg name="z"              value="1.5"/>
+    <arg name="use_move_base"  value="true"/>
+    <arg name="use_global_ekf" value="false"/>
+    <arg name="use_global_tf"  value="false"/>
+    <arg name="use_fake_localization" value="true"/>
+    <arg name="fake_battery"          value="$(arg use_battery)" />
+  </include>
+  <node pkg="multi_jackal_tutorials" type="NavigateWaypointActionServer"  name="NavigateWaypointActionServer" ns="$(arg ns0)" respawn="true"  output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="InspectWaypointActionServer"   name="InspectWaypointActionServer"  ns="$(arg ns0)" respawn="false" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="JackalChargeActionServer"      name="ChargeJackalActionServer"     ns="$(arg ns0)" respawn="false" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="WaitActionServer"              name="WaitActionServer"             ns="$(arg ns0)" respawn="false"  output="screen"/> -->
+
+  <!-- Spawn Jackal 1 -->
+  <!-- <include file="$(find multi_jackal_base)/launch/jackal_base.launch">
+    <arg name="ns"             value="$(arg ns1)"/>
+    <arg name="x"              value="-2"/>
+    <arg name="y"              value="2.25"/>
+    <arg name="z"              value="1.5"/>
+    <arg name="config"         value="$(arg config)"/>
+    <arg name="config_id"      value="$(arg config_id)"/>
+    <arg name="use_move_base"  value="true"/>
+    <arg name="use_global_ekf" value="false"/>
+    <arg name="use_global_tf"  value="false"/>
+    <arg name="use_fake_localization" value="true"/>
+    <arg name="fake_battery"          value="$(arg use_battery)" />
+  </include>
+  <node pkg="multi_jackal_tutorials" type="NavigateWaypointActionServer"  name="NavigateWaypointActionServer" ns="$(arg ns1)" respawn="true" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="InspectWaypointActionServer"   name="InspectWaypointActionServer"  ns="$(arg ns1)" respawn="false" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="JackalChargeActionServer"      name="ChargeJackalActionServer"     ns="$(arg ns1)" respawn="false" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="WaitActionServer"              name="WaitActionServer"             ns="$(arg ns1)" respawn="false"  output="screen"/> -->
+
+  <!-- Spawn Jackal 2 -->
+<!--   <include file="$(find multi_jackal_base)/launch/jackal_base.launch">
+    <arg name="ns"             value="$(arg ns2)"/>
+    <arg name="x"              value="5.3"/>
+    <arg name="y"              value="-5.25"/>
+    <arg name="z"              value="1.5"/>
+    <arg name="config"         value="$(arg config)"/>
+    <arg name="config_id"      value="$(arg config_id)"/>
+    <arg name="use_move_base"  value="true"/>
+    <arg name="use_global_ekf" value="false"/>
+    <arg name="use_global_tf"  value="false"/>
+    <arg name="use_fake_localization" value="true"/>
+    <arg name="fake_battery"          value="$(arg use_battery)" />
+  </include> -->
+  <node pkg="multi_jackal_tutorials" type="NavigateWaypointActionServer"  name="NavigateWaypointActionServer" ns="$(arg ns2)" respawn="true" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="InspectWaypointActionServer"   name="InspectWaypointActionServer"  ns="$(arg ns2)" respawn="false" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="JackalChargeActionServer"      name="ChargeJackalActionServer"     ns="$(arg ns2)" respawn="false" output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="WaitActionServer"              name="WaitActionServer"             ns="$(arg ns2)" respawn="false"  output="screen"/>
+
+  <!-- Spawn Warthog -->
+<!--   <include file="$(find multi_warthog_base)/launch/warthog_base.launch">
+    <arg name="ns0"           value="$(arg warthog_ns)" />
+    <arg name="config"        value="base" />
+    <arg name="x"              value="-7"/>
+    <arg name="y"              value="7"/>
+    <arg name="z"              value="1.5"/>
+  </include> -->
+
+<!--   <node pkg="multi_jackal_tutorials" type="NavigateWaypointActionServer"  name="NavigateWaypointActionServer" ns="$(arg warthog_ns)" respawn="true"   output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="WarthogChargeActionServer"     name="ChargeWarthogActionServer"    ns="$(arg warthog_ns)" respawn="false"  output="screen"/>
+  <node pkg="multi_jackal_tutorials" type="WaitActionServer"              name="WaitActionServer"             ns="$(arg warthog_ns)" respawn="false"  output="screen"/> -->
+
+<!--   <node pkg="battery_mockup" type="StartBattery" name="StartBattery" respawn="false" output="screen"/>
+
+  <group if="$(arg rviz)">
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find multi_jackal_tutorials)/rviz/three_jackal_inspection.rviz" >
+      <remap from="/move_base_simple/goal" to="/$(arg ns2)/move_base_simple/goal"/>
+    </node>
+  </group> -->
+
+</launch>
